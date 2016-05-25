@@ -52,7 +52,7 @@ def run_example
   resource_group_params.tags = { hello: 'world' }
   print_group client.resource_groups.create_or_update(GROUP_NAME, resource_group_params)
 
-  # Create a WebApp in the Resource Group
+  # Create a Key Vault in the Resource Group
   puts 'Create a Key Vault via a Generic Resource Put'
   key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg|
     rg.location = WEST_US
@@ -80,7 +80,7 @@ def run_example
   end
   puts JSON.pretty_generate(client.resource_groups.export_template(GROUP_NAME, export_params).template) + "\n\n"
 
-  # Delete Resource group
+  # Delete Resource group and everything in it
   puts 'Delete Resource Group'
   client.resource_groups.delete(GROUP_NAME)
   puts "\nDeleted: #{GROUP_NAME}"
