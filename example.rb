@@ -39,18 +39,16 @@ def run_example
 
   # List Resource Groups
   puts 'List Resource Groups'
-  client.resource_groups.list.value.each do |group|
-    print_group(group)
-  end
+  client.resource_groups.list.value.each{ |group| print_item(group) }
 
   # Create Resource group
   puts 'Create Resource Group'
-  print_group client.resource_groups.create_or_update(GROUP_NAME, resource_group_params)
+  print_item client.resource_groups.create_or_update(GROUP_NAME, resource_group_params)
 
   # Modify the Resource group
   puts 'Modify Resource Group'
   resource_group_params.tags = { hello: 'world' }
-  print_group client.resource_groups.create_or_update(GROUP_NAME, resource_group_params)
+  print_item client.resource_groups.create_or_update(GROUP_NAME, resource_group_params)
 
   # Create a Key Vault in the Resource Group
   puts 'Create a Key Vault via a Generic Resource Put'
@@ -73,6 +71,10 @@ def run_example
                                          '2015-06-01',
                                          key_vault_params).properties)  + "\n\n"
 
+  # List Resources within the group
+  puts 'List all of the resources within the group'
+  client.resource_groups.list_resources(GROUP_NAME).value.each{ |resource| print_item(resource) }
+
   # Export the Resource group template
   puts 'Export Resource Group Template'
   export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
@@ -87,18 +89,20 @@ def run_example
 
 end
 
-def print_group(group)
+def print_item(group)
   puts "\tName: #{group.name}"
   puts "\tId: #{group.id}"
-  puts "\tName: #{group.name}"
   puts "\tLocation: #{group.location}"
   puts "\tTags: #{group.tags}"
   print_properties(group.properties)
 end
 
 def print_properties(props)
-  puts "\tProperties:"
-  puts "\t\tProvisioning State: #{props.provisioning_state}\n\n"
+  if props.respond_to? :provisioning_state
+    puts "\tProperties:"
+    puts "\t\tProvisioning State: #{props.provisioning_state}"
+  end
+  puts "\n\n"
 end
 
 if $0 == __FILE__
