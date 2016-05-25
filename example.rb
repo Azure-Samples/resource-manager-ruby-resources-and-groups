@@ -84,7 +84,7 @@ def run_example
 
   # Delete Resource group and everything in it
   puts 'Delete Resource Group'
-  client.resource_groups.delete(GROUP_NAME)
+  client.resource_groups.delete(GROUP_NAME).value!
   puts "\nDeleted: #{GROUP_NAME}"
 
 end
