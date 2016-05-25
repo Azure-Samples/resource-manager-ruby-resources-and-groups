@@ -23,14 +23,11 @@ each the Tenant Id, Client Id and Client Secret from creating the Service Princi
 - `export AZURE_TENANT_ID={your tenant id}`
 - `export AZURE_CLIENT_ID={your client id}`
 - `export AZURE_CLIENT_SECRET={your client secret}`
+- `export AZURE_SUBSCRIPTION_ID={your subscription id}`
 - `bundle exec ruby example.rb`
 
 ### What is this example.rb doing?
 
-The entry point for this sample is [azure_deployment.rb](https://github.com/azure-samples/resource-manager-ruby-template-deployment/blob/master/azure_deployment.rb). This script uses the deployer class
-below to deploy a the aforementioned template to the subscription and resource group specified in `my_resource_group`
-and `my_subscription_id` respectively. By default the script will use the ssh public key from your default ssh
-location.
-
-*Note: you must set each of the below environment variables (AZURE_TENANT_ID, AZURE_CLIENT_ID and AZURE_CLIENT_SECRET) prior to
-running the script.*
+The entry point for this sample is [example.rb](https://github.com/azure-samples/resource-manager-ruby-resources-and-groups/blob/master/example.rb).
+*Note: you must set each of the below environment variables (AZURE_TENANT_ID, AZURE_CLIENT_ID and AZURE_CLIENT_SECRET
+AZURE_SUBSCRIPTION_ID) prior to running the script.*

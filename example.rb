@@ -39,22 +39,50 @@ def run_example
 
   # List Resource Groups
   puts 'List Resource Groups'
-  client.resource_groups.list.value!.body.value.each do |group|
+  client.resource_groups.list.value.each do |group|
     print_group(group)
   end
 
   # Create Resource group
   puts 'Create Resource Group'
-  print_group client.resource_groups.create_or_update(GROUP_NAME, resource_group_params).value!.body
+  print_group client.resource_groups.create_or_update(GROUP_NAME, resource_group_params)
 
   # Modify the Resource group
   puts 'Modify Resource Group'
   resource_group_params.tags = { hello: 'world' }
-  print_group client.resource_groups.create_or_update(GROUP_NAME, resource_group_params).value!.body
+  print_group client.resource_groups.create_or_update(GROUP_NAME, resource_group_params)
+
+  # Create a WebApp in the Resource Group
+  puts 'Create a Key Vault via a Generic Resource Put'
+  key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg|
+    rg.location = WEST_US
+    rg.properties = {
+        sku: { family: 'A', name: 'standard' },
+        tenantId: ENV['AZURE_TENANT_ID'],
+        accessPolicies: [],
+        enabledForDeployment: true,
+        enabledForTemplateDeployment: true,
+        enabledForDiskEncryption: true
+    }
+  end
+  puts JSON.pretty_generate(client.resources.create_or_update(GROUP_NAME,
+                                         'Microsoft.KeyVault',
+                                         '',
+                                         'vaults',
+                                         'azureSampleVault',
+                                         '2015-06-01',
+                                         key_vault_params).properties)  + "\n\n"
+
+  # Export the Resource group template
+  puts 'Export Resource Group Template'
+  export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
+    rg.resources = ['*']
+  end
+  puts JSON.pretty_generate(client.resource_groups.export_template(GROUP_NAME, export_params).template) + "\n\n"
 
   # Delete Resource group
   puts 'Delete Resource Group'
-  client.resource_groups.delete(GROUP_NAME).value!
+  client.resource_groups.delete(GROUP_NAME)
   puts "\nDeleted: #{GROUP_NAME}"
 
 end
