@@ -13,9 +13,12 @@ Azure Ruby SDK.
 
 ## Run this sample
 
-You will need to create an Azure service principal either through Azure CLI, PowerShell or the portal. You should gather
-each the Tenant Id, Client Id and Client Secret from
-[creating the Service Principal](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal/#authenticate-with-password---azure-cli)
+Create an Azure service principal either through
+[Azure CLI](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal-cli/),
+[PowerShell](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal/)
+or [the portal](https://azure.microsoft.com/en-us/documentation/articles/resource-group-create-service-principal-portal/).
+You should gather each the Tenant Id, Client Id and Client Secret from
+[creating the Service Principal]
 for use below.
 
 ```
