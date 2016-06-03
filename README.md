@@ -9,6 +9,18 @@ author: allclark
 This sample explains how to use Azure Resource Manager to manage your Resource and Resource Groups in Azure using the
 Azure Ruby SDK.
 
+**On this page**
+- [Run this sample](#run)
+- [What is example.rb doing](#example)
+    - [List resource groups](#list-groups)
+    - [Create a resource group](#create-group)
+    - [Update a resource group](#update-group)
+    - [Create a key vault in the resource group](#create-resource)
+    - [List resources within the group](#list-resources)
+    - [Export the resource group template](#export)
+    - [Delete a resource group](#delete-group)
+
+<a id="run"></a>
 ## Run this sample
 
 1. If you don't already have it, [install Ruby and the Ruby DevKit](https://www.ruby-lang.org/en/documentation/installation/).
@@ -51,7 +63,8 @@ or [the portal](https://azure.microsoft.com/en-us/documentation/articles/resourc
     bundle exec ruby example.rb
     ```
 
-## What is this example.rb doing?
+<a id="example"></a>
+## What is example.rb doing?
 
 The sample walks you through several resource and resource group management operations.
 It starts by setting up a ResourceManagementClient object using your subscription and credentials.
@@ -79,7 +92,8 @@ end
 There are a couple of supporting functions (`print_item` and `print_properties`) that print a resource group and it's properties.
 With that set up, the sample lists all resource groups for your subscription, it performs these operations.
 
-## List resource groups
+<a id="list-groups"></a>
+### List resource groups
 
 List the resource groups in your subscription.
 
@@ -87,13 +101,15 @@ List the resource groups in your subscription.
  client.resource_groups.list.value.each{ |group| print_item(group) }
 ```
 
-## Create a resource group
+<a id="create-group"></a>
+### Create a resource group
 
 ```ruby
 client.resource_groups.create_or_update('azure-sample-group', resource_group_params)
 ```
 
-## Update a resource group
+<a id="update-group"></a>
+### Update a resource group
 
 The sample adds a tag to the resource group.
 
@@ -102,7 +118,8 @@ resource_group_params.tags = { hello: 'world' }
 client.resource_groups.create_or_update('azure-sample-group', resource_group_params)
 ```
 
-## Create a key vault in the resource group
+<a id="create-resource"></a>
+### Create a key vault in the resource group
 
 ```ruby
 key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg|
@@ -125,13 +142,15 @@ key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg
                                     key_vault_params)
 ```
 
-## List resources within the group
+<a id="list-resources"></a>
+### List resources within the group
 
 ```ruby
 client.resource_groups.list_resources(GROUP_NAME).value.each{ |resource| print_item(resource) }
 ```
 
-## Export the resource group template
+<a id="export"></a>
+### Export the resource group template
 
 ```ruby
 export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
@@ -140,7 +159,8 @@ end
 client.resource_groups.export_template(GROUP_NAME, export_params)
 ```
 
-## Delete a resource group
+<a id="delete-group"></a>
+### Delete a resource group
 
 ```ruby
 client.resource_groups.delete('azure-sample-group')
