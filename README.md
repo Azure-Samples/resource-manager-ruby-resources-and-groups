@@ -17,22 +17,22 @@ Azure Ruby SDK.
 
 1. If you don't have bundler, install it.
 
-```
-gem install bundler
-```
+    ```
+    gem install bundler
+    ```
 
 1. Clone the repository.
 
-```
-git clone https://github.com/Azure-Samples/resource-manager-ruby-template-deployment.git
-```
+    ```
+    git clone https://github.com/Azure-Samples/resource-manager-ruby-template-deployment.git
+    ```
 
 1. Install the dependencies using bundle.
 
-```
-cd resource-manager-ruby-template-deployment
-bundle install
-```
+    ```
+    cd resource-manager-ruby-template-deployment
+    bundle install
+    ```
 
 1. Create an Azure service principal either through
 [Azure CLI](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal-cli/),
@@ -41,17 +41,17 @@ or [the portal](https://azure.microsoft.com/en-us/documentation/articles/resourc
 
 1. Add these environment variables to your .env file using your Tenant Id, Client Id and Client Secret.
 
-```
-export AZURE_TENANT_ID={your tenant id}
-export AZURE_CLIENT_ID={your client id}
-export AZURE_CLIENT_SECRET={your client secret}
-```
+    ```
+    export AZURE_TENANT_ID={your tenant id}
+    export AZURE_CLIENT_ID={your client id}
+    export AZURE_CLIENT_SECRET={your client secret}
+    ```
 
 1. Run the sample.
 
-```
-bundle exec ruby example.rb
-```
+    ```
+    bundle exec ruby example.rb
+    ```
 
 ## What is this example.rb doing?
 
