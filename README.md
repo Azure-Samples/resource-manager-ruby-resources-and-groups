@@ -106,6 +106,7 @@ client.resource_groups.create_or_update('azure-sample-group', resource_group_par
 
 ## Create a key vault in the resource group
 
+```ruby
 key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg|
     rg.location = WEST_US
     rg.properties = {
@@ -124,6 +125,7 @@ key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg
                                     'azureSampleVault',
                                     '2015-06-01',
                                     key_vault_params)
+```
 
 ## List resources within the group
 
