@@ -104,7 +104,7 @@ resource_group_params.tags = { hello: 'world' }
 client.resource_groups.create_or_update('azure-sample-group', resource_group_params)
 ```
 
-# Create a key vault in the resource group
+## Create a key vault in the resource group
 
 key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg|
     rg.location = WEST_US
@@ -125,13 +125,13 @@ key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg
                                     '2015-06-01',
                                     key_vault_params)
 
-# List resources within the group
+## List resources within the group
 
 ```ruby
 client.resource_groups.list_resources(GROUP_NAME).value.each{ |resource| print_item(resource) }
 ```
 
-# Export the resource group template
+## Export the resource group template
 
 ```ruby
 export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
