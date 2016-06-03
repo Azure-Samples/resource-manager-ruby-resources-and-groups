@@ -71,7 +71,6 @@ client.subscription_id = subscription_id
 ```
 
 It also sets up a ResourceGroup object (resource_group_params) to be used as a parameter in some of the API calls.
-*Why the ResourceGroup location set to WEST_US in this sample?*
 
 ```ruby
 resource_group_params = Azure::ARM::Resources::Models::ResourceGroup.new.tap do |rg|
@@ -79,7 +78,7 @@ resource_group_params = Azure::ARM::Resources::Models::ResourceGroup.new.tap do 
 end
 ```
 
-There are a couple of supporting functions (`print_group` and `print_properties`) that print a resource group and it's properties.
+There are a couple of supporting functions (`print_item` and `print_properties`) that print a resource group and it's properties.
 With that set up, the sample lists all resource groups for your subscription, it performs these operations.
 
 ## List resource groups
@@ -87,9 +86,7 @@ With that set up, the sample lists all resource groups for your subscription, it
 List the resource groups in your subscription.
 
 ```ruby
-  client.resource_groups.list.value!.body.value.each do |group|
-    print_group(group)
-  end
+ client.resource_groups.list.value.each{ |group| print_item(group) }
 ```
 
 ## Create a resource group
@@ -105,6 +102,42 @@ The sample adds a tag to the resource group.
 ```ruby
 resource_group_params.tags = { hello: 'world' }
 client.resource_groups.create_or_update('azure-sample-group', resource_group_params)
+```
+
+# Create a key vault in the resource group
+
+key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg|
+    rg.location = WEST_US
+    rg.properties = {
+        sku: { family: 'A', name: 'standard' },
+        tenantId: ENV['AZURE_TENANT_ID'],
+        accessPolicies: [],
+        enabledForDeployment: true,
+        enabledForTemplateDeployment: true,
+        enabledForDiskEncryption: true
+    }
+  end
+  client.resources.create_or_update(GROUP_NAME,
+                                    'Microsoft.KeyVault',
+                                    '',
+                                    'vaults',
+                                    'azureSampleVault',
+                                    '2015-06-01',
+                                    key_vault_params)
+
+# List resources within the group
+
+```ruby
+client.resource_groups.list_resources(GROUP_NAME).value.each{ |resource| print_item(resource) }
+```
+
+# Export the resource group template
+
+```ruby
+export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
+    rg.resources = ['*']
+end
+client.resource_groups.export_template(GROUP_NAME, export_params)
 ```
 
 ## Delete a resource group
