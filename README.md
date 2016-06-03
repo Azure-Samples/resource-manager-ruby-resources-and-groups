@@ -6,8 +6,9 @@ author: allclark
 
 # Managing Azure Resource and Resource Groups with Ruby
 
-This sample explains how to use Azure Resource Manager to manage your Resource and Resource Groups in Azure using the
-Azure Ruby SDK.
+This sample explains how to manage your
+[resources and resource groups in Azure](https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups)
+using the Azure Ruby SDK.
 
 **On this page**
 - [Run this sample](#run)
@@ -49,12 +50,13 @@ Azure Ruby SDK.
 [PowerShell](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal/)
 or [the portal](https://azure.microsoft.com/en-us/documentation/articles/resource-group-create-service-principal-portal/).
 
-1. Add these environment variables to your .env file using your Tenant Id, Client Id and Client Secret.
+1. Add these environment variables to your .env file using your subscription id and the tenant id, client id and client secret from the service principle that you created. 
 
     ```
     export AZURE_TENANT_ID={your tenant id}
     export AZURE_CLIENT_ID={your client id}
     export AZURE_CLIENT_SECRET={your client secret}
+    export AZURE_SUBSCRIPTION_ID={your subscription id}
     ```
 
 1. Run the sample.
