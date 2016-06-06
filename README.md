@@ -12,7 +12,7 @@ using the Azure Ruby SDK.
 
 **On this page**
 - [Run this sample](#run)
-- [What is example.rb doing](#example)
+- [What is example.rb doing?](#example)
     - [List resource groups](#list-groups)
     - [Create a resource group](#create-group)
     - [Update a resource group](#update-group)
