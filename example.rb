@@ -8,15 +8,16 @@ Dotenv.load!(File.join(__dir__, './.env'))
 WEST_US = 'westus'
 GROUP_NAME = 'azure-sample-group'
 
-# This script expects that the following environment vars are set:
-#
 # Manage resources and resource groups - create, update and delete a resource group, deploy a solution into a resource
 #   group, export an ARM template. Create, read, update and delete a resource
+#
+# This script expects that the following environment vars are set:
 #
 # AZURE_TENANT_ID: with your Azure Active Directory tenant id or domain
 # AZURE_CLIENT_ID: with your Azure Active Directory Application Client ID
 # AZURE_CLIENT_SECRET: with your Azure Active Directory Application Secret
 # AZURE_SUBSCRIPTION_ID: with your Azure Subscription Id
+#
 def run_example
   #
   # Create the Resource Manager Client with an Application (service principal) token provider
