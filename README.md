@@ -11,6 +11,7 @@ This sample explains how to manage your
 using the Azure Ruby SDK.
 
 **On this page**
+
 - [Run this sample](#run)
 - [What is example.rb doing?](#example)
     - [List resource groups](#list-groups)
