@@ -60,6 +60,8 @@ or [the portal](https://azure.microsoft.com/en-us/documentation/articles/resourc
     export AZURE_SUBSCRIPTION_ID={your subscription id}
     ```
 
+    > [AZURE.NOTE] On Windows, use `set` instead of `export`.
+
 1. Run the sample.
 
     ```
