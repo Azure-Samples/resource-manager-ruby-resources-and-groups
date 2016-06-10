@@ -157,6 +157,9 @@ client.resource_groups.list_resources(GROUP_NAME).value.each{ |resource| print_i
 <a id="export"></a>
 ### Export the resource group template
 
+You can export the resource group as a template and then use that
+to [deploy your resources to Azure](https://azure.microsoft.com/documentation/samples/resource-manager-ruby-template-deployment/).
+
 ```ruby
 export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
     rg.resources = ['*']
