@@ -36,7 +36,7 @@ using the Azure Ruby SDK.
 1. Clone the repository.
 
     ```
-    git clone https://github.com/Azure-Samples/resource-manager-ruby-template-deployment.git
+    git clone https://github.com/Azure-Samples/resource-manager-ruby-resources-and-groups.git
     ```
 
 1. Install the dependencies using bundle.
