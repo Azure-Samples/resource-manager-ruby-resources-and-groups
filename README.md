@@ -1,7 +1,7 @@
 ---
 services: azure-resource-manager
 platforms: ruby
-author: allclark
+author: devigned
 ---
 
 # Managing Azure Resource and Resource Groups with Ruby
