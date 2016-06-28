@@ -1,7 +1,7 @@
 ---
 services: azure-resource-manager
 platforms: ruby
-author: allclark
+author: devigned
 ---
 
 # Managing Azure Resource and Resource Groups with Ruby
@@ -47,11 +47,11 @@ using the Azure Ruby SDK.
     ```
 
 1. Create an Azure service principal either through
-[Azure CLI](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal-cli/),
-[PowerShell](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal/)
-or [the portal](https://azure.microsoft.com/en-us/documentation/articles/resource-group-create-service-principal-portal/).
+    [Azure CLI](https://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal-cli/),
+    [PowerShell](https://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal/)
+    or [the portal](https://azure.microsoft.com/documentation/articles/resource-group-create-service-principal-portal/).
 
-1. Add these environment variables to your .env file using your subscription id and the tenant id, client id and client secret from the service principle that you created. 
+1. Set the following environment variables using the information from the service principle that you created.
 
     ```
     export AZURE_TENANT_ID={your tenant id}
@@ -59,6 +59,8 @@ or [the portal](https://azure.microsoft.com/en-us/documentation/articles/resourc
     export AZURE_CLIENT_SECRET={your client secret}
     export AZURE_SUBSCRIPTION_ID={your subscription id}
     ```
+
+    > [AZURE.NOTE] On Windows, use `set` instead of `export`.
 
 1. Run the sample.
 
@@ -154,6 +156,9 @@ client.resource_groups.list_resources(GROUP_NAME).value.each{ |resource| print_i
 
 <a id="export"></a>
 ### Export the resource group template
+
+You can export the resource group as a template and then use that
+to [deploy your resources to Azure](https://azure.microsoft.com/documentation/samples/resource-manager-ruby-template-deployment/).
 
 ```ruby
 export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
