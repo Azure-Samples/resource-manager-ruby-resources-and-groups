@@ -60,8 +60,6 @@ using the Azure Ruby SDK.
     export AZURE_SUBSCRIPTION_ID={your subscription id}
     ```
 
-    > [AZURE.NOTE] On Windows, use `set` instead of `export`.
-
 1. Run the sample.
 
     ```
