@@ -4,7 +4,7 @@ platforms: ruby
 author: devigned
 ---
 
-# Managing Azure Resource and Resource Groups with Ruby
+# Manage Azure resources and resource groups with Ruby
 
 This sample explains how to manage your
 [resources and resource groups in Azure](https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups)
