@@ -40,7 +40,7 @@ def run_example
 
   # List Resource Groups
   puts 'List Resource Groups'
-  client.resource_groups.list.value.each{ |group| print_item(group) }
+  client.resource_groups.list.each{ |group| print_item(group) }
 
   # Create Resource group
   puts 'Create Resource Group'
@@ -74,7 +74,7 @@ def run_example
 
   # List Resources within the group
   puts 'List all of the resources within the group'
-  client.resource_groups.list_resources(GROUP_NAME).value.each{ |resource| print_item(resource) }
+  client.resource_groups.list_resources(GROUP_NAME).each{ |resource| print_item(resource) }
 
   # Export the Resource group template
   puts 'Export Resource Group Template'
@@ -85,7 +85,7 @@ def run_example
 
   # Delete Resource group and everything in it
   puts 'Delete Resource Group'
-  client.resource_groups.delete(GROUP_NAME).value!
+  client.resource_groups.delete(GROUP_NAME)
   puts "\nDeleted: #{GROUP_NAME}"
 
 end
@@ -99,9 +99,12 @@ def print_item(group)
 end
 
 def print_properties(props)
-  if props.respond_to? :provisioning_state
-    puts "\tProperties:"
-    puts "\t\tProvisioning State: #{props.provisioning_state}"
+  puts "\tProperties:"
+  props.instance_variables.sort.each do |ivar|
+    str = ivar.to_s.gsub /^@/, ''
+    if props.respond_to? str.to_sym
+      puts "\t\t#{str}: #{props.send(str.to_sym)}"
+    end
   end
   puts "\n\n"
 end
