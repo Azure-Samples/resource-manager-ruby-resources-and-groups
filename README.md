@@ -42,7 +42,7 @@ using the Azure Ruby SDK.
 1. Install the dependencies using bundle.
 
     ```
-    cd resource-manager-ruby-template-deployment
+    cd resource-manager-ruby-resources-and-groups
     bundle install
     ```
 
