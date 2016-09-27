@@ -15,3 +15,4 @@ end
 
 gem 'azure_mgmt_resources', '~>0.6.0'
 gem 'haikunator',           '~>1.1'
+
