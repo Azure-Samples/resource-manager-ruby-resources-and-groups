@@ -28,13 +28,18 @@ def run_example
       ENV['AZURE_CLIENT_ID'],
       ENV['AZURE_CLIENT_SECRET'])
   credentials = MsRest::TokenCredentials.new(provider)
-  client = Azure::ARM::Resources::ResourceManagementClient.new(credentials)
-  client.subscription_id = subscription_id
+
+  options = {
+      credentials: credentials,
+      subscription_id: subscription_id
+  }
+
+  client = Azure::Resources::Profiles::Latest::Mgmt::Client.new(options)
 
   #
   # Managing resource groups
   #
-  resource_group_params = Azure::ARM::Resources::Models::ResourceGroup.new.tap do |rg|
+  resource_group_params = client.model_classes.resource_group.new.tap do |rg|
     rg.location = WEST_US
   end
 
@@ -53,7 +58,7 @@ def run_example
 
   # Create a Key Vault in the Resource Group
   puts 'Create a Key Vault via a Generic Resource Put'
-  key_vault_params = Azure::ARM::Resources::Models::GenericResource.new.tap do |rg|
+  key_vault_params = client.model_classes.generic_resource.new.tap do |rg|
     rg.location = WEST_US
     rg.properties = {
         sku: { family: 'A', name: 'standard' },
@@ -74,11 +79,11 @@ def run_example
 
   # List Resources within the group
   puts 'List all of the resources within the group'
-  client.resource_groups.list_resources(GROUP_NAME).each{ |resource| print_item(resource) }
+  client.resource_groups.list.each{ |resource| print_item(resource) }
 
   # Export the Resource group template
   puts 'Export Resource Group Template'
-  export_params = Azure::ARM::Resources::Models::ExportTemplateRequest.new.tap do |rg|
+  export_params = client.model_classes.export_template_request.new.tap do |rg|
     rg.resources = ['*']
   end
   puts JSON.pretty_generate(client.resource_groups.export_template(GROUP_NAME, export_params).template) + "\n\n"
