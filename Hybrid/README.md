@@ -109,6 +109,7 @@ It starts by setting up a ResourceManagementClient object using your subscriptio
 ```ruby
 subscription_id = ENV['AZURE_SUBSCRIPTION_ID'] || '11111111-1111-1111-1111-111111111111'
 
+# This parameter is only required for AzureStack or other soverign clouds. Pulic Azure already has these settings by default.
 active_directory_settings = get_active_directory_settings(ENV['ARM_ENDPOINT'])
 
 provider = MsRestAzure::ApplicationTokenProvider.new(

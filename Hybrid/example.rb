@@ -20,8 +20,10 @@ def run_example
   # Create the Resource Manager Client with an Application (service principal) token provider
   #
   subscription_id = ENV['AZURE_SUBSCRIPTION_ID'] || '11111111-1111-1111-1111-111111111111'
+
+  # This parameter is only required for AzureStack or other soverign clouds. Pulic Azure already has these settings by default.
   active_directory_settings = get_active_directory_settings(ENV['ARM_ENDPOINT'])
-   # your Azure Subscription Id
+
   provider = MsRestAzure::ApplicationTokenProvider.new(
       ENV['AZURE_TENANT_ID'],
       ENV['AZURE_CLIENT_ID'],
