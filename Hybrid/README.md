@@ -7,7 +7,7 @@ author: viananth
 # Manage Azure resources and resource groups with Ruby
 
 This sample explains how to manage your
-[resources and resource groups in Azure](https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups)
+[resources and resource groups in Azure](https://docs.microsoft.com/en-us/azure/azure-stack/azure-stack-key-features#resource-groups)
 using the Azure Ruby SDK.
 
 **On this page**
@@ -60,6 +60,7 @@ using the Azure Ruby SDK.
     export AZURE_CLIENT_ID={your client id}
     export AZURE_CLIENT_SECRET={your client secret}
     export AZURE_SUBSCRIPTION_ID={your subscription id}
+    export ARM_ENDPOINT={your AzureStack Resource manager url}
     ```
 
     > [AZURE.NOTE] On Windows, use `set` instead of `export`.
@@ -71,23 +72,25 @@ using the Azure Ruby SDK.
     client = Azure::Resources::Profiles::V2017_03_09::Mgmt::Client.new(options)
     ```
 
-1. To authenticate the Service Principal against Azure Stack environment, the endpoints should be defined using ```get_active_directory_settings()```. Retrieve 'authenication_endpoint' and 'token_audience' from ARM metadata endpoint.
+1. To authenticate the Service Principal against Azure Stack environment, the endpoints should be defined using ```get_active_directory_settings()```. This method uses the ARM_Endpoint environment variable that was set using step 7.
 
-    Metadata endpoint format:
-    ```
-    <ResourceManagerUrl>/metadata/endpoints?api-version=1.0
-    ```
-    Example:
-    ```
-    https://management.<location>.azurestack.external/metadata/endpoints?api-version=1.0
-    ```
 
     ```ruby
-    def get_active_directory_settings()
+    # Get Authentication endpoints using Arm Metadata Endpoints
+    def get_active_directory_settings(armEndpoint)
         settings = MsRestAzure::ActiveDirectoryServiceSettings.new
-        settings.authentication_endpoint = '<authentication endpoint>'
-        settings.token_audience = '<token-audience>'
-    settings
+        response = Net::HTTP.get_response(URI("#{armEndpoint}/metadata/endpoints?api-version=1.0"))
+        status_code = response.code
+        response_content = response.body
+        unless status_code == "200"
+            error_model = JSON.load(response_content)
+            fail MsRestAzure::AzureOperationError.new("Getting Azure Stack Metadata Endpoints", response, error_model)
+        end
+
+        result = JSON.load(response_content)
+        settings.authentication_endpoint = result['authentication']['loginEndpoint'] unless result['authentication']['loginEndpoint'].nil?
+        settings.token_audience = result['authentication']['audiences'][0] unless result['authentication']['audiences'][0].nil?
+        settings
     end
     ```
 
@@ -106,7 +109,7 @@ It starts by setting up a ResourceManagementClient object using your subscriptio
 ```ruby
 subscription_id = ENV['AZURE_SUBSCRIPTION_ID'] || '11111111-1111-1111-1111-111111111111'
 
-active_directory_settings = get_active_directory_settings()
+active_directory_settings = get_active_directory_settings(ENV['ARM_ENDPOINT'])
 
 provider = MsRestAzure::ApplicationTokenProvider.new(
 	ENV['AZURE_TENANT_ID'],
@@ -120,7 +123,7 @@ options = {
 	credentials: credentials,
 	subscription_id: subscription_id,
 	active_directory_settings: active_directory_settings,
-	base_url: 'https://management.local.azurestack.external' # Your Resource Manager URL
+	base_url: ENV['ARM_ENDPOINT']
 }
 
 client = Azure::Resources::Profiles::V2017_03_09::Mgmt::Client.new(options)

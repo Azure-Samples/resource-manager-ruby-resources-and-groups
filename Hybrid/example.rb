@@ -20,8 +20,7 @@ def run_example
   # Create the Resource Manager Client with an Application (service principal) token provider
   #
   subscription_id = ENV['AZURE_SUBSCRIPTION_ID'] || '11111111-1111-1111-1111-111111111111'
-  active_directory_settings = get_active_directory_settings()
-
+  active_directory_settings = get_active_directory_settings(ENV['ARM_ENDPOINT'])
    # your Azure Subscription Id
   provider = MsRestAzure::ApplicationTokenProvider.new(
       ENV['AZURE_TENANT_ID'],
@@ -35,7 +34,7 @@ def run_example
       credentials: credentials,
       subscription_id: subscription_id,
       active_directory_settings: active_directory_settings,
-      base_url: 'https://management.<location>.azurestack.external'
+      base_url: ENV['ARM_ENDPOINT']
   }
 
   client = Azure::Resources::Profiles::V2017_03_09::Mgmt::Client.new(options)
@@ -120,10 +119,20 @@ def print_properties(props)
   puts "\n\n"
 end
 
-def get_active_directory_settings()
+# Get Authentication endpoints using Arm Metadata Endpoints
+def get_active_directory_settings(armEndpoint)
   settings = MsRestAzure::ActiveDirectoryServiceSettings.new
-  settings.authentication_endpoint = 'https://login.windows.net/'
-  settings.token_audience = '<token_audience_uri>'
+  response = Net::HTTP.get_response(URI("#{armEndpoint}/metadata/endpoints?api-version=1.0"))
+  status_code = response.code
+  response_content = response.body
+  unless status_code == "200"
+    error_model = JSON.load(response_content)
+    fail MsRestAzure::AzureOperationError.new("Getting Azure Stack Metadata Endpoints", response, error_model)
+  end
+
+  result = JSON.load(response_content)
+  settings.authentication_endpoint = result['authentication']['loginEndpoint'] unless result['authentication']['loginEndpoint'].nil?
+  settings.token_audience = result['authentication']['audiences'][0] unless result['authentication']['audiences'][0].nil?
   settings
 end
 
