@@ -11,7 +11,7 @@ urlFragment: resource-manager-ruby-resources-and-groups
 # Manage Azure resources and resource groups with Ruby
 
 This sample explains how to manage your
-[resources and resource groups in Azure](https://azure.microsoft.com/documentation/articles/resource-group-overview/#resource-groups)
+[resources and resource groups in Azure](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-overview#resource-groups)
 using the Azure Ruby SDK.
 
 **On this page**
